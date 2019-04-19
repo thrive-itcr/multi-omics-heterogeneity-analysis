@@ -1,0 +1,15 @@
+MarkerIndx	MarkerName	LocationName	MarkerTargets
+0	pS6235	nuclear	pS6235 nuclear
+1	pS6235	cell	pS6235 cell
+2	DAPI	nuclear	DAPI nuclear
+3	DAPI	cell	DAPI cell
+4	pERK	nuclear	pERK nuclear
+5	pERK	cell	pERK cell
+6	S6	nuclear	S6 nuclear
+7	S6	cell	S6 cell
+8	p4EBP1	nuclear	p4EBP1 nuclear
+9	p4EBP1	cell	p4EBP1 cell
+10	NaKATPase	nuclear	NaKATPase nuclear
+11	NaKATPase	cell	NaKATPase cell
+12	E_cad	nuclear	E_cad nuclear
+13	E_cad	cell	E_cad cell

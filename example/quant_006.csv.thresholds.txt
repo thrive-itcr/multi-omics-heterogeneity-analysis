@@ -1,0 +1,8 @@
+BiomarkerColumnName	pS6235_Nuc_Median	pS6235_Cell_Median	DAPI_Nuc_Median	DAPI_Cell_Median	pERK_Nuc_Median	pERK_Cell_Median	S6_Nuc_Median	S6_Cell_Median	p4EBP1_Nuc_Median	p4EBP1_Cell_Median	NaKATPase_Nuc_Median	NaKATPase_Cell_Median	E_cad_Nuc_Median	E_cad_Cell_Median
+BiomarkerName	pS6235	pS6235	DAPI	DAPI	pERK	pERK	S6	S6	p4EBP1	p4EBP1	NaKATPase	NaKATPase	E_cad	E_cad
+BiomarkerLocation	nuclear	cell	nuclear	cell	nuclear	cell	nuclear	cell	nuclear	cell	nuclear	cell	nuclear	cell
+BiomarkerMetric	median	median	median	median	median	median	median	median	median	median	median	median	median	median
+minValue	1.0	0.0	21.0	0.0	1.0	0.0	51.5	0.0	1.0	0.0	1.0	0.0	1.0	0.0
+threshold_1_of_2	221.0	257.0	1179.0	996.0	174.0	210.0	1327.0	1540.0	203.0	246.0	720.0	1399.5	367.0	845.0
+threshold_2_of_2	318.0	357.5	1849.0	1445.0	228.0	270.0	1701.0	1891.0	289.0	304.0	1322.0	1860.0	816.0	1165.0
+maxValue	2698.0	1075.5	3979.0	2266.0	1632.0	528.0	3020.0	2820.0	3017.0	531.0	5279.0	3549.0	3199.0	2495.0
