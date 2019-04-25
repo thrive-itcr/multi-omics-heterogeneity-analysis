@@ -12,10 +12,11 @@ create the threshold filed called quant_006.csv.thresholds.txt
 ```
 java -jar MOHAtool.jar -computeThresholds=example/quant_006.csv -biomarkerMetricTag=_Cell_Mean
 ```
-First change the working directory to the location of the jar file that has 
-a subdirectory called “example”.  The next line computes thresholds from a 
-cell stat file with the biomarker measures called quant_006.csv    It will 
-create the threshold filed called quant_006.csv.thresholds.txt  
+Next you compute the cell states using the threshold file.  It requires the 
+inputted cell measures quant_006.csv and the threshold file that was 
+generated in the previous step.  The output of this step will be a couple 
+files, one of them called “quant_006.csv.MarkerStates.txt”  This will be 
+used as input for the final step.
 ```
 java -jar MOHAtool.jar -computeCellStates=example/quant_006.csv -thresholdFile=example/quant_006.csv.thresholds.txt
 ```
