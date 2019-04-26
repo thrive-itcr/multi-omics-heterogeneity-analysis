@@ -5,6 +5,7 @@
 # Multi-Omics Heterogeneity Analysis
 
 import os, glob, uuid, time, json, string, logging, subprocess
+import mysql.connector
 
 # function: run_algorithm() -- Python function for marshalling your data and running your algorithm.
 # parameters:
@@ -38,7 +39,7 @@ def run_algorithm(datastore, context):
 
     # Code for calling algorithm.
     try:
-        run_threshold_algorithm = 'java -jar MOHAtool.jar -computeThresholds=data/quant_%s.csv -biomarkerMetricTag=_Cell_Mean' % context['region']
+        run_threshold_algorithm = 'java -jar MOHAtool.jar -computeThresholds=data/quant_%s.csv' % context['region']
         logging.info('run Algorithm: %r' % run_threshold_algorithm)
         subprocess.check_call(run_threshold_algorithm,shell=True)
     except subprocess.CalledProcessError, e:
@@ -90,7 +91,7 @@ def run_algorithm(datastore, context):
             # Store result files and obtain the URIs that refer to those files.
             response_heterogeneity_upload = datastore.post_instance(MOHA_path, '/rt106/data', moha_heterogeneity_csv, 'csv', context['force'])
 
-    # Parse heterogeneity metrics file to pull out key metrics.  Return the metrics and save them to the database.
+    # Parse heterogeneity metrics file to pull out key metrics.  Return the metrics.
     if status == "EXECUTION_FINISHED_SUCCESS":
         hetfile = open('/rt106/data/'+moha_heterogeneity_csv, "r")
         hetcolumns = hetfile.readline()
@@ -101,6 +102,12 @@ def run_algorithm(datastore, context):
         hetdict = {}
         for i in range(len(hetcol_list)):
             hetdict[hetcol_list[i]] = hetval_list[i]
+
+        #  Save the metrics to the database.
+        cnx = mysql.connector.connect(user='root',password='rt106mysql',host='mysql',database='rt106db')
+        # TODO:  How to set up metrics table?
+        # Insert several entries into the metrics table.
+        cnx.close()
 
     # 5.    Create JSON structure containing results.
     nuclear_image_path = datastore.get_pathology_primary_path(context['slide'], context['region'], 'DAPI')
