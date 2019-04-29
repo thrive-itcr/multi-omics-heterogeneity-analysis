@@ -8,6 +8,9 @@ USER root
 RUN apt-get -y update \
     && apt-get install -y default-jre
 
+# Setup Python MySQL connection
+RUN pip install mysql-connector
+
 RUN mkdir -p /rt106/data
 ADD MOHAtool.jar rt106SpecificAdaptorCode.py rt106SpecificAdaptorDefinitions.json /rt106/
 

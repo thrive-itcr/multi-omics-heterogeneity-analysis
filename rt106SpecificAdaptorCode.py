@@ -92,7 +92,10 @@ def run_algorithm(datastore, context):
             response_heterogeneity_upload = datastore.post_instance(MOHA_path, '/rt106/data', moha_heterogeneity_csv, 'csv', context['force'])
 
     # Parse heterogeneity metrics file to pull out key metrics.  Return the metrics.
-    if status == "EXECUTION_FINISHED_SUCCESS":
+    if status != "EXECUTION_FINISHED_SUCCESS":
+        return {'status' : 'ERROR_CALCULATING_METRICS'}
+
+    try:
         hetfile = open('/rt106/data/'+moha_heterogeneity_csv, "r")
         hetcolumns = hetfile.readline()
         hetvalues = hetfile.readline()
@@ -102,12 +105,25 @@ def run_algorithm(datastore, context):
         hetdict = {}
         for i in range(len(hetcol_list)):
             hetdict[hetcol_list[i]] = hetval_list[i]
+    except:
+        return {'status' : 'CANNOT_OPEN_METRICS_FILE'}
 
+    try:
         #  Save the metrics to the database.
-        cnx = mysql.connector.connect(user='root',password='rt106mysql',host='mysql',database='rt106db')
-        # TODO:  How to set up metrics table?
+        cnx = mysql.connector.connect(user='root',password='thrivemysql',host='thrive-mysql',database='thrivedb')
         # Insert several entries into the metrics table.
+        cursor = cnx.cursor()
+        add_metric = "INSERT INTO heterogeneity_metric (slide_name, region_name, branch_name, metric_name, metric_value) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE metric_value=%s"
+        cellfamily_data = (context['slide'], context['region'], context['branch'], 'CellFamily_Heterogeneity', hetdict['CellFamily_Heterogeneity'], hetdict['CellFamily_Heterogeneity'])
+        cursor.execute(add_metric, cellfamily_data)
+        cellsocial_data = (context['slide'], context['region'], context['branch'], 'CellSocial_Heterogeneity', hetdict['CellSocial_Heterogeneity'], hetdict['CellSocial_Heterogeneity'])
+        cursor.execute(add_metric, cellsocial_data)
+        molecular_data = (context['slide'], context['region'], context['branch'], 'Molecular_Heterogeneity', hetdict['Molecular_Heterogeneity'], hetdict['Molecular_Heterogeneity'])
+        cursor.execute(add_metric, molecular_data)
+        cnx.commit()
         cnx.close()
+    except:
+        return {'status' : 'ERROR_SAVING_METRICS_TO_DATABASE'}
 
     # 5.    Create JSON structure containing results.
     nuclear_image_path = datastore.get_pathology_primary_path(context['slide'], context['region'], 'DAPI')
